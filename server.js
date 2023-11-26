@@ -21,8 +21,17 @@ async function connect() {
 
 connect();
 
-// Serve static files from the public directory
-app.use(express.static(path.join(__dirname, 'public')));
+ // Serve files from the current directory
+app.use(express.static(__dirname));
+
+ // Serve files from the /javascript directory
+app.use('/javascript', express.static(__dirname + '/javascript'));
+
+// Log to console to verify that the static files are being served
+app.use((req, res, next) => {
+    console.log(`Serving ${req.url}`);
+    next();
+});
 
 // Handles root path by serving the index.html file
 app.get('/', (req, res) => {
@@ -76,7 +85,7 @@ async function insertWordsFromFile(filePath, model) {
 }
 
 // Insert solution words into MongoDB
-const solutionFilePath = path.join(__dirname, 'word_files', 'solutionWords.txt');
+const solutionFilePath = path.join(__dirname,'word_files', 'solutionWords.txt');
 insertWordsFromFile(solutionFilePath, SolutionWord);
 
 // Insert guessable words into MongoDB
@@ -86,4 +95,24 @@ insertWordsFromFile(guessableFilePath, GuessableWord);
 // Start the server
 app.listen(port, () => {
     console.log(`Server started on port ${port}`);
+});
+
+//--------------------------------------------------------------------------------
+
+// Defines a route to fetch a random word from the server
+app.get('/api/random-word', async (req, res) => {
+    try {
+        const count = await SolutionWord.countDocuments();
+        if (count === 0) {
+            res.status(404).json({ error: 'No words available' });
+            return;
+        }
+
+        const randomIndex = Math.floor(Math.random() * count);
+        const randomWord = await SolutionWord.findOne().skip(randomIndex).select('word');
+        res.json({ word: randomWord.word });
+    } catch (error) {
+        console.error(`Error getting random word: ${error.message}`);
+        res.status(500).json({ error: 'Internal server error' });
+    }
 });
