@@ -85,7 +85,7 @@ async function insertWordsFromFile(filePath, model) {
 }
 
 // Insert solution words into MongoDB
-const solutionFilePath = path.join(__dirname,'word_files', 'solutionWords.txt');
+const solutionFilePath = path.join(__dirname, 'word_files', 'solutionWords.txt');
 insertWordsFromFile(solutionFilePath, SolutionWord);
 
 // Insert guessable words into MongoDB
