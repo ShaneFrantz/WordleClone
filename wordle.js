@@ -1,5 +1,15 @@
 console.log('Wordle.js loaded');
 
+//TODO LIST
+
+//Put logic in end key press to check if guess is a valid word before moving to next row
+//Update box colors upon moving to next row according to users guess
+//Game ending logic
+//Game restarting logic
+//Dictionary API
+
+//Will prob store users guess in both an array of letters and a string for different purposes
+
 //Box Colors
 const white = "#ffffff";
 const yellow = "#faf178";
@@ -89,6 +99,10 @@ document.addEventListener("DOMContentLoaded", function() {
             if (pointerX == 4 && lastBox.innerText !== "") return;
             changeBoxLetter(pointerX, pointerY, key.toUpperCase());
             if (pointerX < 5) pointerX++;
+        } else if (key === 'enter' && lastBox.innerText !== "") {
+            pointerY++;
+            pointerX = 0;
+            lastBox = getLastBox();
         }
     });
 });
