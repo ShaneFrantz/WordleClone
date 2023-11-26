@@ -6,20 +6,22 @@ const yellow = "#faf178";
 const green = "#84ff69";
 
 //Box pointer variables that default to first box at (0,0)
-let pointerX = 0;
-let pointerY = 0;
+var pointerX = 0;
+var pointerY = 0;
+
+// Stores coords of the last box in the current guess row
+var lastBox; 
 
 // Fetch a random solution word from the server
 async function getSolutionWord() {
-    console.log('Function called');
+    console.log('getSolutionWord() called');
     try {
         // Fetch data from the server
         const response = await fetch('/api/random-word');
         const data = await response.json();
 
-        // Update the displayed word
-        const wordDisplay = document.getElementById('wordDisplay');
-        wordDisplay.innerText = `${data.word}`;
+        solution = data.word;
+        console.log(solution);
     } catch (error) {
         console.error('Error fetching random word:', error.message);
     }
@@ -63,6 +65,32 @@ document.addEventListener("DOMContentLoaded", function() {
             createBox(null, white, j, i);
         }
     }
+
+    //Getting random word from server
+    getSolutionWord();
+
+    // Function to get the last box in a row based on current pointerY value
+    function getLastBox() {
+        return document.querySelector(`.grid-item[data-x="4"][data-y="${pointerY}"]`);
+    }
+
+    lastBox = getLastBox();
+
+    //Key listener
+    document.addEventListener('keydown', function (event) {
+        const key = event.key.toLowerCase();
+    
+        if (key === 'backspace') {
+            changeBoxLetter(pointerX - 1, pointerY, null);
+            if (pointerX > 0) pointerX--;
+        } else if (key.match(/^[a-z]$/)) {
+            //Does not change letter in box if it's the last in the row and if it's already filled
+            
+            if (pointerX == 4 && lastBox.innerText !== "") return;
+            changeBoxLetter(pointerX, pointerY, key.toUpperCase());
+            if (pointerX < 5) pointerX++;
+        }
+    });
 });
 
 

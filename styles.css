@@ -17,8 +17,8 @@ body {
 }
 
 .grid-item {
-    width: 30px;
-    height: 30px; 
+    width: 27px;
+    height: 27px; 
     background-color: white;
     color: black;
     display: flex;
