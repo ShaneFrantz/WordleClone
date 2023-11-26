@@ -1,0 +1,23 @@
+{
+  "name": "wordleclone",
+  "version": "1.0.0",
+  "description": "Wordle clone that connects to MongoDB word list",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShaneFrantz/WordleClone.git"
+  },
+  "author": "Shane Frantz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ShaneFrantz/WordleClone/issues"
+  },
+  "homepage": "https://github.com/ShaneFrantz/WordleClone#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^8.0.1"
+  }
+}
