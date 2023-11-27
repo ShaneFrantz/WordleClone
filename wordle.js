@@ -151,7 +151,7 @@ function updateRowColors(guessArray, solution) {
 
     // Updating the box colors
     for (let i = 0; i <= 4; i++) document.querySelector(`.grid-item[data-x="${i}"][data-y="${pointerY}"]`).style.backgroundColor = `${guessArray[i]}`;
-    if (correctGuess) endGame();
+    if (correctGuess) endGame(true);
 }
 
 // Function to evaluate user's guess and determine which information should be outputted to them
@@ -176,6 +176,8 @@ async function evaluateGuess() {
             lastBox = getLastBox();
             // Reset flag
             evaluateGuessInProgress = false;
+            // Ends game in a loss if player used their last guess
+            if (pointerY == 6) endGame(false);
         }
     } else {
         // Clearing all values in a row
@@ -228,20 +230,28 @@ async function startGame () {
 }
 
 // Function that handles game ending logic
-function endGame() {
+function endGame(solvedPrompt) {
     gameEnded = true;
     console.log('The game has ended.');
 
-    //Display the buttons
-    buttonContainer.style.display = 'flex';
-
     // Introduce a delay before showing the alert
-    let delayTime = 1000;
+    let alertDelayTime = 1000;
 
+    if (solvedPrompt) {
+        setTimeout(() => {
+            if (pointerY == 0) alert('You solved the prompt in 1 guess!');
+            else alert(`You solved the prompt in ${pointerY + 1} guesses!`);
+        }, alertDelayTime);
+    } else {
+        setTimeout(() => {
+            alert(`Sorry! The solution was \"${solution}\"!`);
+        }, alertDelayTime);
+    }
+
+    //Display the buttons
     setTimeout(() => {
-        if (pointerY == 0) alert('You solved the prompt in 1 guess!');
-        else alert(`You solved the prompt in ${pointerY + 1} guesses!`);
-    }, delayTime);
+        buttonContainer.style.display = 'flex';
+    }, alertDelayTime + 500);
 }
 
 //Wait until document is fully loaded, then create default grid
