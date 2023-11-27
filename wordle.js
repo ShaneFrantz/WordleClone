@@ -2,7 +2,6 @@ console.log('Wordle.js loaded');
 
 //TODO LIST
 
-//Update box colors upon moving to next row according to users guess
 //Game ending logic
 //Game restarting logic
 //Dictionary API
@@ -11,6 +10,7 @@ console.log('Wordle.js loaded');
 
 //Box Colors
 const white = "#ffffff";
+const grey = "#757575";
 const yellow = "#faf178";
 const green = "#84ff69";
 
@@ -23,6 +23,22 @@ var lastBox;
 
 // Stores solution word for the current puzzle
 var solution;
+
+// Global flag to check if a guess is currently being evaluated
+var evaluateGuessInProgress = false;
+
+// Global flag to check if the game has already ended
+var gameEnded = false;
+
+// Function that handles game starting logic 
+function startGame () {
+
+}
+
+// Function that handles game ending logic
+function endGame() {
+
+}
 
 // Fetch a random solution word from the server
 async function getSolutionWord() {
@@ -108,12 +124,48 @@ async function checkDatabaseForWord(word) {
     }
 }
 
+// Function to update colors in a row after a user guesses to reflect which letters are fully correct, in a different spot, or not in the word at all
+function updateRowColors(guessArray, solution) {
+    let solutionArray = solution.split('');
+    let correctGuess = true;
+
+    // Checking for green letters
+    for (let i = 0; i <= 4; i++) {
+        if (guessArray[i] == solutionArray[i]) {
+            guessArray[i] = 'green';
+            solutionArray[i] = null;
+        } else {
+            correctGuess = false;
+        }
+    }
+    // Checking for yellow and grey letters
+    for (let i = 0; i <= 4; i++) {
+        if (guessArray[i] == 'green') continue;
+        else if (solutionArray.includes(guessArray[i])) {
+            // Getting index of first instance of guessArray value and removing it
+            let index = solutionArray.indexOf(guessArray[i]);
+            solutionArray[index] = null;
+            guessArray[i] = 'yellow';
+        } else guessArray[i] = 'grey';
+    }
+
+    if (correctGuess) {
+        gameEnded = true;
+        console.log('The game has ended.');
+    }
+    console.log(guessArray);
+
+    // Updating the box colors
+    for (let i = 0; i <= 4; i++) document.querySelector(`.grid-item[data-x="${i}"][data-y="${pointerY}"]`).style.backgroundColor = `${guessArray[i]}`;
+}
+
 // Function to evaluate user's guess and determine which information should be outputted to them
 async function evaluateGuess() {
+    evaluateGuessInProgress = true;
     //Box values in a row stored in an array
-    var guessArray = Array.from({ length: 5 }, (_, x) => document.querySelector(`.grid-item[data-x="${x}"][data-y="${pointerY}"]`).innerText.toLowerCase());
+    let guessArray = Array.from({ length: 5 }, (_, x) => document.querySelector(`.grid-item[data-x="${x}"][data-y="${pointerY}"]`).innerText.toLowerCase());
     //Box values in a row cacatenated together
-    var guessString = guessArray.join('');
+    let guessString = guessArray.join('');
     pointerX = 0;
 
     console.log('Checking database for word:', guessString);
@@ -122,20 +174,46 @@ async function evaluateGuess() {
 
     if (validWord) {
         console.log('Word found');
-        pointerY++;
-        lastBox = getLastBox();
+        updateRowColors(guessArray, solution);
+        if (gameEnded) return;
+        else {
+            pointerY++;
+            lastBox = getLastBox();
+            // Reset flag
+            evaluateGuessInProgress = false;
+        }
     } else {
         // Clearing all values in a row
         console.log('Word not found');
         for (let i = 0; i <= 4; i++) {
             document.querySelector(`.grid-item[data-x="${i}"][data-y="${pointerY}"]`).innerText = "";
         }
+        // Reset flag
+        evaluateGuessInProgress = false;
     }
 }
 
+//Function that handles key listener declared below
+function handleKeyDown(event) {
+    const key = event.key.toLowerCase();
+
+    // Do nothing if there's a guess being evaluated or if the game has ended
+    if (evaluateGuessInProgress || gameEnded) return;
+    
+     else if (key === 'backspace') {
+        changeBoxLetter(pointerX - 1, pointerY, null);
+        if (pointerX > 0) pointerX--;
+     } else if (key.match(/^[a-z]$/)) {
+        //Does not change letter in box if it's the last in the row and if it's already filled
+            
+        if (pointerX == 4 && lastBox.innerText !== "") return;
+        changeBoxLetter(pointerX, pointerY, key.toUpperCase());
+        if (pointerX < 5) pointerX++;
+    } else if (key === 'enter' && lastBox.innerText !== "") evaluateGuess();
+}
 
 //Wait until document is fully loaded, then create default grid
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", async function() {
     for (let i = 0; i < 6; i++) {
         for (let j = 0; j < 5; j++) {
             // You can set the default letter, color, and coordinates here
@@ -144,27 +222,15 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     //Getting random word from server
-    solution = getSolutionWord();
+    solution = await getSolutionWord();
+
+    // UNCOMMENT FOR TESTING
     console.log(solution);
 
     lastBox = getLastBox();
-
-    //Key listener
-    document.addEventListener('keydown', function (event) {
-        const key = event.key.toLowerCase();
-    
-        if (key === 'backspace') {
-            changeBoxLetter(pointerX - 1, pointerY, null);
-            if (pointerX > 0) pointerX--;
-        } else if (key.match(/^[a-z]$/)) {
-            //Does not change letter in box if it's the last in the row and if it's already filled
-            
-            if (pointerX == 4 && lastBox.innerText !== "") return;
-            changeBoxLetter(pointerX, pointerY, key.toUpperCase());
-            if (pointerX < 5) pointerX++;
-        } else if (key === 'enter' && lastBox.innerText !== "") evaluateGuess();
-    });
+    document.addEventListener('keydown', handleKeyDown);
 });
+
 
 
 
