@@ -2,13 +2,12 @@ console.log('Wordle.js loaded');
 
 //TODO LIST
 
-//Put logic in end key press to check if guess is a valid word before moving to next row
 //Update box colors upon moving to next row according to users guess
 //Game ending logic
 //Game restarting logic
 //Dictionary API
-
-//Will prob store users guess in both an array of letters and a string for different purposes
+//Mobile functionality
+//Make this look good on different size screens
 
 //Box Colors
 const white = "#ffffff";
@@ -22,6 +21,9 @@ var pointerY = 0;
 // Stores coords of the last box in the current guess row
 var lastBox; 
 
+// Stores solution word for the current puzzle
+var solution;
+
 // Fetch a random solution word from the server
 async function getSolutionWord() {
     console.log('getSolutionWord() called');
@@ -30,8 +32,7 @@ async function getSolutionWord() {
         const response = await fetch('/api/random-word');
         const data = await response.json();
 
-        solution = data.word;
-        console.log(solution);
+        return data.word;
     } catch (error) {
         console.error('Error fetching random word:', error.message);
     }
@@ -66,6 +67,72 @@ function changeBoxLetter(x, y, newLetter) {
     }
 }
 
+// Function to get the last box in a row based on current pointerY value
+function getLastBox() {
+    return document.querySelector(`.grid-item[data-x="4"][data-y="${pointerY}"]`);
+}
+
+//Function that checks if input word exists in any model of the MongoDB database
+async function checkDatabaseForWord(word) {
+    try {
+        // Checking if word exists in SolutionWord model
+        let solutionWordResponse = await fetch('/api/solution-word/' + word);
+        console.log('Solution Word Response:', solutionWordResponse);
+        if (!solutionWordResponse.ok) {
+            console.error(`Error checking SolutionWord model: ${solutionWordResponse.statusText}`);
+            return false;
+        }
+        let solutionWord = await solutionWordResponse.json();
+        if (solutionWord.exists) {
+            console.log("Word found in SolutionWord");
+            return true;
+        }
+        // Checking if word exists in GuessableWord model
+        let guessableWordResponse = await fetch('/api/guessable-word/' + word);
+        console.log('Guessable Word Response', guessableWordResponse);
+        if (!guessableWordResponse.ok) {
+            console.error(`Error checking GuessableWord model: ${guessableWordResponse.statusText}`);
+            return false;
+        }
+        let guessableWord = await guessableWordResponse.json();
+        if (guessableWord.exists) {
+            console.log("Word foundin GuessableWord");
+            return true;
+        }
+
+        // Word not found in either model
+        return false;
+    } catch (error) {
+        console.error('There was an unexpected error checking the database for the word', error.message);
+        return false;
+    }
+}
+
+// Function to evaluate user's guess and determine which information should be outputted to them
+async function evaluateGuess() {
+    //Box values in a row stored in an array
+    var guessArray = Array.from({ length: 5 }, (_, x) => document.querySelector(`.grid-item[data-x="${x}"][data-y="${pointerY}"]`).innerText.toLowerCase());
+    //Box values in a row cacatenated together
+    var guessString = guessArray.join('');
+    pointerX = 0;
+
+    console.log('Checking database for word:', guessString);
+    let validWord = await checkDatabaseForWord(guessString);
+    console.log(validWord);
+
+    if (validWord) {
+        console.log('Word found');
+        pointerY++;
+        lastBox = getLastBox();
+    } else {
+        // Clearing all values in a row
+        console.log('Word not found');
+        for (let i = 0; i <= 4; i++) {
+            document.querySelector(`.grid-item[data-x="${i}"][data-y="${pointerY}"]`).innerText = "";
+        }
+    }
+}
+
 
 //Wait until document is fully loaded, then create default grid
 document.addEventListener("DOMContentLoaded", function() {
@@ -77,12 +144,8 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     //Getting random word from server
-    getSolutionWord();
-
-    // Function to get the last box in a row based on current pointerY value
-    function getLastBox() {
-        return document.querySelector(`.grid-item[data-x="4"][data-y="${pointerY}"]`);
-    }
+    solution = getSolutionWord();
+    console.log(solution);
 
     lastBox = getLastBox();
 
@@ -99,11 +162,7 @@ document.addEventListener("DOMContentLoaded", function() {
             if (pointerX == 4 && lastBox.innerText !== "") return;
             changeBoxLetter(pointerX, pointerY, key.toUpperCase());
             if (pointerX < 5) pointerX++;
-        } else if (key === 'enter' && lastBox.innerText !== "") {
-            pointerY++;
-            pointerX = 0;
-            lastBox = getLastBox();
-        }
+        } else if (key === 'enter' && lastBox.innerText !== "") evaluateGuess();
     });
 });
 

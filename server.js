@@ -116,3 +116,20 @@ app.get('/api/random-word', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
+// API endpoints to check if a word exists in the SolutionWord model
+app.get('/api/solution-word/:word', async (req, res) => {
+    let word = req.params.word.toLowerCase();
+    console.log('Received request for SolutionWord with word:', word);
+    let exists = await SolutionWord.exists({word});
+    res.json({exists});
+    console.log(`SolutionWord: Word '${word}' exists: ${exists}`);
+});
+// API endpoints to check if a word exists in the GuessableWord model
+app.get('/api/guessable-word/:word', async (req, res) => {
+    let word = req.params.word.toLowerCase();
+    console.log('Received request for GuessableWord with word:', word);
+    let exists = await GuessableWord.exists({word});
+    res.json({exists});
+    console.log(`GuessableWord: Word '${word}' exists: ${exists}`);
+});
