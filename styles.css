@@ -14,6 +14,7 @@ body {
     max-width: 600px;
     height: 50vh;
     margin-bottom: 120px;
+    position: absolute;
 }
 
 .grid-item {
@@ -26,4 +27,27 @@ body {
     justify-content: center;
     font-family: Franklin Gothic Medium,Franklin Gothic,ITC Franklin Gothic,Arial,sans-serif; 
     font-size: 20px;
+}
+
+.button-container {
+    display: none;
+    justify-content: space-around;
+    margin-top: 250px;
+    position: absolute;
+}
+
+.button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.restart-button {
+    background-color: #3498db;
+    color: #fff;
+}
+
+.definition-button {
+    background-color: #27ae60;
+    color: #fff;
 }

@@ -1,5 +1,3 @@
-console.log('Wordle.js loaded');
-
 //TODO LIST
 
 //Game restarting logic
@@ -113,13 +111,14 @@ async function checkDatabaseForWord(word) {
     }
 }
 
-// Function to set every box color in the grid to white
-function resetGridColors() {
+// Function to reset the grid back to default
+function resetGrid() {
     const gridItems = document.querySelectorAll('.grid-item');
 
     // Iterate through each grid item and set its background color to white
     gridItems.forEach((box) => {
         box.style.backgroundColor = white;
+        box.innerText = '';
     });
 }
 
@@ -211,12 +210,13 @@ function handleKeyDown(event) {
 // Function that handles game starting logic 
 async function startGame () {
     console.log('New game has started');
+    buttonContainer.style.display = 'none';
     pointerX = 0;
     pointerY = 0;
     evaluateGuessInProgress = false;
     gameEnded = false;
     
-    resetGridColors();
+    resetGrid();
     //Getting random word from server
     solution = await getSolutionWord();
 
@@ -232,6 +232,9 @@ function endGame() {
     gameEnded = true;
     console.log('The game has ended.');
 
+    //Display the buttons
+    buttonContainer.style.display = 'flex';
+
     // Introduce a delay before showing the alert
     let delayTime = 1000;
 
@@ -243,6 +246,8 @@ function endGame() {
 
 //Wait until document is fully loaded, then create default grid
 document.addEventListener("DOMContentLoaded", async function() {
+    console.log('Wordle.js loaded');
+
     for (let i = 0; i < 6; i++) {
         for (let j = 0; j < 5; j++) {
             // You can set the default letter, color, and coordinates here
@@ -250,7 +255,10 @@ document.addEventListener("DOMContentLoaded", async function() {
         }
     }
 
-    await startGame();
+    const buttonContainer = document.getElementById('buttonContainer');
+    console.log('Button Container', buttonContainer);
+
+    startGame();
 });
 
 
