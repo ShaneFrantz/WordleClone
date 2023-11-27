@@ -38,8 +38,10 @@ body {
 
 .button {
     padding: 10px 20px;
+    font-family: Franklin Gothic Medium,Franklin Gothic,ITC Franklin Gothic,Arial,sans-serif; 
     font-size: 16px;
     cursor: pointer;
+    margin: 5px;
 }
 
 .restart-button {
@@ -50,4 +52,26 @@ body {
 .definition-button {
     background-color: #27ae60;
     color: #fff;
+}
+
+.definition-container {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background: white;
+    z-index: 3;
+}
+
+.definition-container h2 {
+    color: #333;
+}
+
+.definition-container .popup-content {
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    word-wrap: break-word;
 }

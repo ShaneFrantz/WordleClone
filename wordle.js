@@ -1,17 +1,15 @@
-//TODO LIST
+// TODO LIST
 
-//Game restarting logic
-//Dictionary API
-//Mobile functionality
-//Make this look good on different size screens
+// Fix bug on restart
+// Host on Azure
 
-//Box Colors
+// Box Colors
 const white = "#ffffff";
 const grey = "#757575";
 const yellow = "#faf178";
 const green = "#84ff69";
 
-//Box pointer variables that default to first box at (0,0)
+// Box pointer variables that default to first box at (0,0)
 var pointerX;
 var pointerY;
 
@@ -75,7 +73,7 @@ function getLastBox() {
     return document.querySelector(`.grid-item[data-x="4"][data-y="${pointerY}"]`);
 }
 
-//Function that checks if input word exists in any model of the MongoDB database
+// Function that checks if input word exists in any model of the MongoDB database
 async function checkDatabaseForWord(word) {
     try {
         // Checking if word exists in SolutionWord model
@@ -190,7 +188,7 @@ async function evaluateGuess() {
     }
 }
 
-//Function that handles key listener declared below
+// Function that handles key listener declared below
 function handleKeyDown(event) {
     const key = event.key.toLowerCase();
 
@@ -219,11 +217,11 @@ async function startGame () {
     gameEnded = false;
     
     resetGrid();
-    //Getting random word from server
+    // Getting random word from server
     solution = await getSolutionWord();
 
     // UNCOMMENT FOR TESTING
-    console.log(solution);
+    console.log(`%c${solution}`, 'color: orange; font-weight: bold;');
 
     lastBox = getLastBox();
     document.addEventListener('keydown', handleKeyDown);
@@ -248,13 +246,60 @@ function endGame(solvedPrompt) {
         }, alertDelayTime);
     }
 
-    //Display the buttons
+    // Display the buttons
     setTimeout(() => {
         buttonContainer.style.display = 'flex';
     }, alertDelayTime + 500);
 }
 
-//Wait until document is fully loaded, then create default grid
+// Function to get definition of word from dictionary API
+async function getDefinition() {
+    const definitionContainer = document.getElementById('solutionDefinition');
+    definitionContainer.innerHTML = ''; // Clear previous content
+
+    // Fetch the definition using the API
+    const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${solution}`);
+    const data = await response.json();
+
+    if (Array.isArray(data) && data.length > 0) {
+        const wordData = data[0]; // Assuming the first result is relevant
+
+        // Display word and its definition
+        definitionContainer.innerHTML += `<h2 class="console-log-solution">${wordData.word}</p>`;
+    
+        wordData.meanings.forEach(meaning => {
+            meaning.definitions.forEach(definition => {
+                definitionContainer.innerHTML += `<div class="meaning">
+                    <h3>${meaning.partOfSpeech}</h3>
+                    <p>${definition.definition}</p>
+                </div>`;
+            });
+        });
+
+        // Show the definition container and hide the buttons
+        buttonContainer.style.display = 'none';
+        const definitionContainerWrapper = document.querySelector('.definition-container');
+        definitionContainerWrapper.style.display = 'block';
+    } else {
+        // Handle the case where the API response is unexpected
+        console.error('Unexpected API response:', data);
+    }
+
+        // Add an event listener to the document for a click event
+    document.addEventListener('click', function (event) {
+        const definitionContainerWrapper = document.querySelector('.definition-container');
+        
+        // Check if the clicked element is outside the definition container
+        if (!definitionContainerWrapper.contains(event.target)) {
+            // Hide the definition container
+            definitionContainerWrapper.style.display = 'none';
+            // Show buttons again
+            buttonContainer.style.display = 'flex';
+        }
+    });
+}
+
+// Wait until document is fully loaded, then create default grid
 document.addEventListener("DOMContentLoaded", async function() {
     console.log('Wordle.js loaded');
 
