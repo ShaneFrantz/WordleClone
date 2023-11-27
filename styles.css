@@ -70,7 +70,7 @@ body {
 }
 
 .definition-container .popup-content {
-    max-height: 400px;
+    max-height: 250px;
     overflow-y: auto;
     border: 1px solid #ccc;
     word-wrap: break-word;

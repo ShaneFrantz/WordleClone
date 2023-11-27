@@ -290,7 +290,7 @@ async function getDefinition() {
         const definitionContainerWrapper = document.querySelector('.definition-container');
         
         // Check if the clicked element is outside the definition container
-        if (!definitionContainerWrapper.contains(event.target)) {
+        if (!definitionContainerWrapper.contains(event.target) && definitionContainerWrapper.style.display == 'block') {
             // Hide the definition container
             definitionContainerWrapper.style.display = 'none';
             // Show buttons again
