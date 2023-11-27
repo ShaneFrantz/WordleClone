@@ -2,7 +2,6 @@ console.log('Wordle.js loaded');
 
 //TODO LIST
 
-//Game ending logic
 //Game restarting logic
 //Dictionary API
 //Mobile functionality
@@ -37,7 +36,16 @@ function startGame () {
 
 // Function that handles game ending logic
 function endGame() {
+    gameEnded = true;
+    console.log('The game has ended.');
 
+    // Introduce a delay before showing the alert
+    let delayTime = 1000;
+
+    setTimeout(() => {
+        if (pointerY == 0) alert('You solved the prompt in 1 guess!');
+        else alert(`You solved the prompt in ${pointerY + 1} guesses!`);
+    }, delayTime);
 }
 
 // Fetch a random solution word from the server
@@ -149,14 +157,11 @@ function updateRowColors(guessArray, solution) {
         } else guessArray[i] = 'grey';
     }
 
-    if (correctGuess) {
-        gameEnded = true;
-        console.log('The game has ended.');
-    }
     console.log(guessArray);
 
     // Updating the box colors
     for (let i = 0; i <= 4; i++) document.querySelector(`.grid-item[data-x="${i}"][data-y="${pointerY}"]`).style.backgroundColor = `${guessArray[i]}`;
+    if (correctGuess) endGame();
 }
 
 // Function to evaluate user's guess and determine which information should be outputted to them
