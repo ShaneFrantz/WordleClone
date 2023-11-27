@@ -14,8 +14,8 @@ const yellow = "#faf178";
 const green = "#84ff69";
 
 //Box pointer variables that default to first box at (0,0)
-var pointerX = 0;
-var pointerY = 0;
+var pointerX;
+var pointerY;
 
 // Stores coords of the last box in the current guess row
 var lastBox; 
@@ -24,29 +24,10 @@ var lastBox;
 var solution;
 
 // Global flag to check if a guess is currently being evaluated
-var evaluateGuessInProgress = false;
+var evaluateGuessInProgress;
 
 // Global flag to check if the game has already ended
-var gameEnded = false;
-
-// Function that handles game starting logic 
-function startGame () {
-
-}
-
-// Function that handles game ending logic
-function endGame() {
-    gameEnded = true;
-    console.log('The game has ended.');
-
-    // Introduce a delay before showing the alert
-    let delayTime = 1000;
-
-    setTimeout(() => {
-        if (pointerY == 0) alert('You solved the prompt in 1 guess!');
-        else alert(`You solved the prompt in ${pointerY + 1} guesses!`);
-    }, delayTime);
-}
+var gameEnded;
 
 // Fetch a random solution word from the server
 async function getSolutionWord() {
@@ -130,6 +111,16 @@ async function checkDatabaseForWord(word) {
         console.error('There was an unexpected error checking the database for the word', error.message);
         return false;
     }
+}
+
+// Function to set every box color in the grid to white
+function resetGridColors() {
+    const gridItems = document.querySelectorAll('.grid-item');
+
+    // Iterate through each grid item and set its background color to white
+    gridItems.forEach((box) => {
+        box.style.backgroundColor = white;
+    });
 }
 
 // Function to update colors in a row after a user guesses to reflect which letters are fully correct, in a different spot, or not in the word at all
@@ -217,6 +208,39 @@ function handleKeyDown(event) {
     } else if (key === 'enter' && lastBox.innerText !== "") evaluateGuess();
 }
 
+// Function that handles game starting logic 
+async function startGame () {
+    console.log('New game has started');
+    pointerX = 0;
+    pointerY = 0;
+    evaluateGuessInProgress = false;
+    gameEnded = false;
+    
+    resetGridColors();
+    //Getting random word from server
+    solution = await getSolutionWord();
+
+    // UNCOMMENT FOR TESTING
+    console.log(solution);
+
+    lastBox = getLastBox();
+    document.addEventListener('keydown', handleKeyDown);
+}
+
+// Function that handles game ending logic
+function endGame() {
+    gameEnded = true;
+    console.log('The game has ended.');
+
+    // Introduce a delay before showing the alert
+    let delayTime = 1000;
+
+    setTimeout(() => {
+        if (pointerY == 0) alert('You solved the prompt in 1 guess!');
+        else alert(`You solved the prompt in ${pointerY + 1} guesses!`);
+    }, delayTime);
+}
+
 //Wait until document is fully loaded, then create default grid
 document.addEventListener("DOMContentLoaded", async function() {
     for (let i = 0; i < 6; i++) {
@@ -226,14 +250,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         }
     }
 
-    //Getting random word from server
-    solution = await getSolutionWord();
-
-    // UNCOMMENT FOR TESTING
-    console.log(solution);
-
-    lastBox = getLastBox();
-    document.addEventListener('keydown', handleKeyDown);
+    await startGame();
 });
 
 
