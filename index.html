@@ -24,13 +24,30 @@
     </div>
     <div id="settingsContainer" class="settings-container">
         <div class="settings-popup">
-            <div class="setting-item" onclick="handleSettingClick(1)">Test1</div>
-            <div class="setting-item" onclick="handleSettingClick(2)">Test2</div>
-            <div class="setting-item" onclick="handleSettingClick(3)">Test3</div>
-            <div class="setting-item" onclick="handleSettingClick(4)">Test4</div>
-            <div class="setting-item" onclick="handleSettingClick(5)">Test5</div>
+            <div class="setting-item">
+                <label class="setting-label">Light Mode</label>
+                <label class="switch">
+                    <input type="checkbox" onchange="toggleColorBlind()">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div class="setting-item">
+                <label class="setting-label">Color Blind Mode</label>
+                <label class="switch">
+                    <input type="checkbox" onchange="toggleLightMode()">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div class="setting-item">
+                <a href="mailto:shanesfrantz@gmail.com" class="setting-label setting-link">Report Bugs</a>
+            </div>
+            <div class="setting-item">
+                <a href="mailto:shanesfrantz@gmail.com" class="setting-label setting-link">Feedback</a>
+            </div>
+            <div class="setting-item">
+                <a href="https://github.com/ShaneFrantz" class="setting-label setting-link" target="_blank">Github</a>
+            </div>
         </div>
     </div>
 </body>
 </html>
-
