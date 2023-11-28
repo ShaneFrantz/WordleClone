@@ -6,5 +6,9 @@ After each guess, they will learn which letters of their guess word are in the a
 
 Application Created by Shane Frantz (Inspired by NY Times "Wordle")
 
+Dictionary handled with Free Dictionary API - https://dictionaryapi.dev/
+
+Words stored in two MongoDB Collections
+
 Lewis University
 Web Development Fall 2023
