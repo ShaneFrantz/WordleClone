@@ -1,7 +1,10 @@
 // TODO LIST
 
-// Fix bug on restart
 // Host on Azure
+
+// On screen keyboard
+// Stats
+// Settings (color blind mode/light mode)
 
 // Box Colors
 const white = "#ffffff";
@@ -315,7 +318,5 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     startGame();
 });
-
-
 
 

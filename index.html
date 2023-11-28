@@ -8,7 +8,12 @@
     <script src="/wordle.js"></script>
 </head>
 <body>
-    <div id="boxGrid" class="grid-container" ></div>
+    <div class="header-container">
+        <h1>Shane's Wordle Clone</h1>
+        <button id="settingsButton" class="settings-button" onclick="openSettings()">Settings</button>
+        <button id="statsButton" class="stats-button" onclick="showStats()">Stats</button>
+    </div>
+    <div id="boxGrid" class="grid-container"></div>
     <div id="buttonContainer" class="button-container">
         <button class="button restart-button" tabindex="-1" onclick="startGame()">Restart</button>
         <button class="button definition-button" tabindex="-1" onclick="getDefinition()">Definition</button>
@@ -19,3 +24,4 @@
     </div>
 </body>
 </html>
+
