@@ -9,9 +9,9 @@
 </head>
 <body>
     <div class="header-container">
-        <h1>Shane's Wordle Clone</h1>
         <button id="settingsButton" class="settings-button" onclick="openSettings()">Settings</button>
         <button id="statsButton" class="stats-button" onclick="showStats()">Stats</button>
+        <h1>Shane's Wordle Clone</h1>
     </div>
     <div id="boxGrid" class="grid-container"></div>
     <div id="buttonContainer" class="button-container">
@@ -21,6 +21,15 @@
     <div class="definition-container">
         <h2>Dictionary</h2>
         <div id="solutionDefinition" class="popup-content"></div>
+    </div>
+    <div id="settingsContainer" class="settings-container">
+        <div class="settings-popup">
+            <div class="setting-item" onclick="handleSettingClick(1)">Test1</div>
+            <div class="setting-item" onclick="handleSettingClick(2)">Test2</div>
+            <div class="setting-item" onclick="handleSettingClick(3)">Test3</div>
+            <div class="setting-item" onclick="handleSettingClick(4)">Test4</div>
+            <div class="setting-item" onclick="handleSettingClick(5)">Test5</div>
+        </div>
     </div>
 </body>
 </html>

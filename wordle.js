@@ -302,6 +302,17 @@ async function getDefinition() {
     });
 }
 
+// Add this function to your wordle.js file
+function openSettings() {
+    const settingsContainer = document.getElementById('settingsContainer');
+    settingsContainer.style.display = settingsContainer.style.display === 'block' ? 'none' : 'block';
+}
+
+// Function to handle setting clicks (you can customize this function)
+function handleSettingClick(settingNumber) {
+    console.log(`Setting ${settingNumber} clicked`);
+}
+
 // Wait until document is fully loaded, then create default grid
 document.addEventListener("DOMContentLoaded", async function() {
     console.log('Wordle.js loaded');
