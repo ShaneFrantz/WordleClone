@@ -212,6 +212,7 @@ function handleKeyDown(event) {
 
 // Function that handles game starting logic 
 async function startGame () {
+    if (settingsContainer.style.display == 'block') return;
     console.log('New game has started');
     buttonContainer.style.display = 'none';
     pointerX = 0;
