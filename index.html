@@ -9,8 +9,8 @@
 </head>
 <body>
     <div class="header-container">
-        <button id="settingsButton" class="settings-button" onclick="openSettings()">Settings</button>
-        <button id="statsButton" class="stats-button" onclick="showStats()">Stats</button>
+        <button id="settingsButton" class="settings-button" tabindex="-1" onclick="openSettings()">Settings</button>
+        <button id="statsButton" class="stats-button" tabindex="-1" onclick="showStats()">Stats</button>
         <h1>Shane's Wordle Clone</h1>
     </div>
     <div id="boxGrid" class="grid-container"></div>
@@ -27,14 +27,14 @@
             <div class="setting-item">
                 <label class="setting-label">Light Mode</label>
                 <label class="switch">
-                    <input type="checkbox" onchange="toggleColorBlind()">
+                    <input type="checkbox" id="color-blind-toggler" onchange="toggleLightMode()">
                     <span class="slider round"></span>
                 </label>
             </div>
             <div class="setting-item">
                 <label class="setting-label">Color Blind Mode</label>
                 <label class="switch">
-                    <input type="checkbox" onchange="toggleLightMode()">
+                    <input type="checkbox" id="light-mode-toggler" onchange="toggleColorBlind()">
                     <span class="slider round"></span>
                 </label>
             </div>

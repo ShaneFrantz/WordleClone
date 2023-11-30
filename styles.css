@@ -141,7 +141,7 @@ p {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 60vw;
-    height: 60vh;
+    height: 37vh;
     background: rgba(0, 0, 0, 0.5);
     z-index: 1000;
 }

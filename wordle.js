@@ -28,6 +28,9 @@ var evaluateGuessInProgress;
 // Global flag to check if the game has already ended
 var gameEnded;
 
+// Global flag to check if light mode is enabled
+var lightModeEnabled = false;
+
 // Fetch a random solution word from the server
 async function getSolutionWord() {
     console.log('getSolutionWord() called');
@@ -193,6 +196,8 @@ async function evaluateGuess() {
 
 // Function that handles key listener declared below
 function handleKeyDown(event) {
+    // Disable if settings are open
+    if (settingsContainer.style.display == 'block') return;
     const key = event.key.toLowerCase();
 
     // Do nothing if there's a guess being evaluated or if the game has ended
@@ -207,7 +212,14 @@ function handleKeyDown(event) {
         if (pointerX == 4 && lastBox.innerText !== "") return;
         changeBoxLetter(pointerX, pointerY, key.toUpperCase());
         if (pointerX < 5) pointerX++;
-    } else if (key === 'enter' && lastBox.innerText !== "") evaluateGuess();
+    } else if (key === 'enter' && lastBox.innerText !== "") {
+        evaluateGuess();
+    }
+
+    // Prevents settings button from being selectable by Enter key
+    if (key === 'enter' && event.target.id === 'settingsButton') {
+        event.preventDefault();
+    }
 }
 
 // Function that handles game starting logic 
@@ -303,6 +315,24 @@ async function getDefinition() {
             buttonContainer.style.display = 'flex';
         }
     });
+}
+
+// Function to toggle light mode
+function toggleLightMode() {
+    // Toggle the light mode state
+    lightModeEnabled = !lightModeEnabled;
+
+    var body = document.body;
+    var h1 = document.querySelector("h1");
+    
+    // Check the state of the light mode and apply styles accordingly
+    if (lightModeEnabled) {
+        body.style.backgroundColor = "#e3be9b";
+        h1.style.color = "black";
+    } else {
+        body.style.backgroundColor = "black";
+        h1.style.color = "white";
+    }
 }
 
 // Add this function to your wordle.js file
