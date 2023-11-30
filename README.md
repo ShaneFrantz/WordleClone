@@ -10,5 +10,7 @@ Dictionary handled with Free Dictionary API - https://dictionaryapi.dev/
 
 Words stored in two MongoDB Collections
 
+Project was developed for screens with 1920x1080 resolution. Going forward I would love to add both mobile support as well as more accessibility settings.
+
 Lewis University
 Web Development Fall 2023
