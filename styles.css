@@ -9,20 +9,28 @@ body {
 
 .header-container {
     text-align: center;
-    margin-bottom: 320px;
+    margin-bottom: 830px;
     font-family: Franklin Gothic Medium,Franklin Gothic,ITC Franklin Gothic,Arial,sans-serif; 
 }
 
 h1 {
     margin: 0;
-    font-size: 24px;
+    font-size: 72px;
     color: #fff;
+}
+
+h3 {
+ font-size: 35px;   
+}
+
+p {
+    font-size: 32px;
 }
 
 .grid-container {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 10px;
+    gap: 25px;
     max-width: 600px;
     height: 50vh;
     margin-bottom: 80px;
@@ -30,30 +38,31 @@ h1 {
 }
 
 .grid-item {
-    width: 27px;
-    height: 27px; 
+    width: 68px;
+    height: 68px; 
     background-color: white;
     color: black;
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: Franklin Gothic Medium,Franklin Gothic,ITC Franklin Gothic,Arial,sans-serif; 
-    font-size: 20px;
+    font-size: 50px;
 }
 
 .button-container {
-    display: none;
-    justify-content: space-around;
-    margin-top: 290px;
+    display: flex;
+    justify-content: center;
     position: absolute;
+    bottom: 70px;
+    width: 100%;
 }
 
 .button {
     padding: 10px 20px;
     font-family: Franklin Gothic Medium,Franklin Gothic,ITC Franklin Gothic,Arial,sans-serif; 
-    font-size: 16px;
+    font-size: 50px;
     cursor: pointer;
-    margin: 5px;
+    margin: 13px;
 }
 
 .restart-button {
@@ -70,9 +79,9 @@ h1 {
     position: absolute;
     top: 10px;
     left: 10px;
-    width: 60px;
-    height: 60px;
-    font-size: 14px;
+    width: 150px;
+    height: 150px;
+    font-size: 35px;
     border-radius: 50%;
     cursor: pointer;
     background-color: #929292;
@@ -87,10 +96,10 @@ h1 {
 .stats-button {
     position: absolute;
     top: 10px;
-    left: 80px;
-    width: 60px;
-    height: 60px;
-    font-size: 14px;
+    left: 200px;
+    width: 150px;
+    height: 150px;
+    font-size: 35px;
     border-radius: 50%;
     cursor: pointer;
     background-color: #929292;
@@ -108,17 +117,18 @@ h1 {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    padding: 20px;
+    padding: 50px;
     background: white;
     z-index: 3;
 }
 
 .definition-container h2 {
     color: #333;
+    font-size: 60px;
 }
 
 .definition-container .popup-content {
-    max-height: 250px;
+    max-height: 313px;
     overflow-y: auto;
     border: 1px solid #ccc;
     word-wrap: break-word;
@@ -130,8 +140,8 @@ h1 {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 50vw;
-    height: 50vh;
+    width: 60vw;
+    height: 60vh;
     background: rgba(0, 0, 0, 0.5);
     z-index: 1000;
 }
@@ -155,11 +165,12 @@ h1 {
 }
 
 .setting-label {
-    font-size: 14px;
+    padding-left: 8px;
+    font-size: 35px;
 }
 
 .setting-link {
-    font-size: 14px;
+    font-size: 35px;
     color: black;
     text-decoration: underline;
 }
@@ -169,15 +180,15 @@ h1 {
 }
 
 .setting-item:hover {
-    transform: scale(1.1);
+    transform: scale(1.03);
 }
 
 
 .switch {
     position: relative;
     display: inline-block;
-    width: 35px;
-    height: 17px;
+    width: 88px;
+    height: 43px;
 }
 
 .switch input {
@@ -202,10 +213,10 @@ h1 {
 .slider:before {
     position: absolute;
     content: "";
-    height: 13px;
-    width: 13px;
-    left: 2px;
-    bottom: 2px;
+    height: 33px;
+    width: 33px;
+    left: 5px;
+    bottom: 5px;
     background-color: white;
     -webkit-transition: 0.4s;
     transition: 0.4s;
@@ -221,9 +232,9 @@ input:focus + .slider {
 }
 
 input:checked + .slider:before {
-    -webkit-transform: translateX(18px);
-    -ms-transform: translateX(18px);
-    transform: translateX(18px);
+    -webkit-transform: translateX(45px);
+    -ms-transform: translateX(45px);
+    transform: translateX(45px);
 }
 
 .slider.round {
@@ -234,28 +245,8 @@ input:checked + .slider:before {
     border-radius: 50%;
 }
 
-
-
-@media screen and (min-height: 724px) {
+@media screen and (max-width: 1394px) {
     .button-container {
-        margin-top: 400px;
-    }
-
-    .grid-container {
-        margin-bottom: 160px;
-    }
-}
-
-@media screen and (max-width: 666px) {
-    .settings-button {
-        width: 50px;
-        height: 50px;
-        font-size: 13px;
-    }
-
-    .stats-button {
-        width: 50px;
-        height: 50px;
-        font-size: 13px;
+        margin-top: 0;
     }
 }

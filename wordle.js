@@ -2,7 +2,7 @@
 
 // Host on Azure
 
-// On screen keyboard
+// On screen keyboard??
 // Stats
 // Settings (color blind mode/light mode)
 
@@ -257,6 +257,8 @@ function endGame(solvedPrompt) {
 
 // Function to get definition of word from dictionary API
 async function getDefinition() {
+    //Doesn't open if settings is open
+    if (settingsContainer.style.display == 'block') return;
     const definitionContainer = document.getElementById('solutionDefinition');
     definitionContainer.innerHTML = ''; // Clear previous content
 
@@ -304,11 +306,10 @@ async function getDefinition() {
 
 // Add this function to your wordle.js file
 function openSettings() {
-    const settingsContainer = document.getElementById('settingsContainer');
     settingsContainer.style.display = settingsContainer.style.display === 'block' ? 'none' : 'block';
 }
 
-// Function to handle setting clicks (you can customize this function)
+// Function to handle setting clicks
 function handleSettingClick(settingNumber) {
     console.log(`Setting ${settingNumber} clicked`);
 }
@@ -316,6 +317,8 @@ function handleSettingClick(settingNumber) {
 // Wait until document is fully loaded, then create default grid
 document.addEventListener("DOMContentLoaded", async function() {
     console.log('Wordle.js loaded');
+
+    const settingsContainer = document.getElementById('settingsContainer');
 
     for (let i = 0; i < 6; i++) {
         for (let j = 0; j < 5; j++) {
