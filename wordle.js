@@ -237,7 +237,7 @@ async function startGame () {
     solution = await getSolutionWord();
 
     // UNCOMMENT FOR TESTING
-    console.log(`%c${solution}`, 'color: orange; font-weight: bold;');
+    //console.log(`%c${solution}`, 'color: orange; font-weight: bold;');
 
     lastBox = getLastBox();
     document.addEventListener('keydown', handleKeyDown);

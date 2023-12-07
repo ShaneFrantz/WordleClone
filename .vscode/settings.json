@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "undefined/subscriptions/70d21436-5284-4403-bcd7-cf32f1d3219d/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/sfwordle",
+    "appService.deploySubpath": "."
+}
