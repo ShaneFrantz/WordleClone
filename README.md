@@ -8,6 +8,12 @@ Application Created by Shane Frantz (Inspired by NY Times "Wordle")
 
 Dictionary handled with Free Dictionary API - https://dictionaryapi.dev/
 
+Project Proposal: https://happy-glacier-0ee2f9c10.4.azurestaticapps.net/
+
+Instructions:
+
+If running locally make sure you have Express, Mongoose, and NodeJS installed. Otherwise, run on Azure website.
+
 Words stored in two MongoDB Collections
 
 Project was developed for screens with 1920x1080 resolution. Going forward I would love to add both mobile support as well as more accessibility settings.
